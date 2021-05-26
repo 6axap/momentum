@@ -44,9 +44,9 @@
 
 body {
 	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  background-color: #f7f7f7;
 	/* font-size: 14px;
 	line-height: 1.5;
-  background-color: #000;
   color: #fff; */
 }
 
@@ -70,18 +70,24 @@ div {
   margin: 16px;
 }
 
+.boxview .title {
+  font-size: 1.2rem;
+}
+
 .box {
+  background-color: #fff;
   padding: 16px 32px;
-  border: 1px solid #e1e4e8;
+  border: .5rem solid #fff;
   border-radius: 6px;
+  box-shadow: 0 .25rem .125rem 0 rgba(0,0,0,0.05);
 }
 
 .box > p {
   font-size: 18px;
 }
 
-.activity {
-}
+/* .activity {
+} */
 
 .grid-day {
   fill: #ebedf0;
@@ -94,13 +100,13 @@ div {
   text-align: center;
 }
 
-.timer > p {
+.timerdisplay {
   font-size: 3rem;
   margin: 20px;
-
+  cursor: pointer; 
 }
 
-.timer > button {
+.timerbtn {
   top: 50%;
   left: 50%;
   /* transform: translate(-50%, -50%);
@@ -108,15 +114,44 @@ div {
   background-color: #f8f8f8;
   color: black;
   font-size: 16px;
-  padding: 8px 16px;
+  padding: .3rem;
   border: 1px solid #e1e4e8;
   cursor: pointer;
   border-radius: 4px;
   text-align: center;
+  transition: 100ms cubic-bezier(.28,.85,.59,.99);
+  /* transition-property: color,background-color,border-color; */
+  width: 4.5rem;
 }
 
-.timer > button:hover {
-  background-color: #94e280;
+.timerbtn.paused {
+  color: #fff;
+  background-color: #9e9e9e;
+  border: 1px solid #9e9e9e;
+}
+
+.timerbtn.paused:hover {
+  background-color: #737373;
+  border: 1px solid #737373;
+}
+
+.timerbtn:hover {
+  background-color: #35a219;
   color: white;
-  border: 1px solid #94e280;
+  border: 1px solid #35a219;
+}
+
+.timer_input {
+  font-size: 3rem;
+  margin: 20px;
+  width: 2em;
+  text-align: center;
+}
+
+.sec {
+  margin-left: 8px;
+}
+
+.min {
+  margin-right: 8px;
 }

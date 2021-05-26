@@ -1,72 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import BoxView from './box'
 import Timer from './timer'
+// eslint-disable-next-line
+import Activity from './activity'
 import '../style/App.css';
 
 function StatsGrid() {
+  // eslint-disable-next-line
+  const [data, setData] = useState(0);
+
+  useEffect(() => {
+    fetchAPI('/api')
+  });
+
+  const fetchAPI = (path) => {
+    fetch(path)
+    .then(res => res.json())
+    .then(data => setData( data ))
+  }
+
   return(
     <div className="main">
       <div className="stats">
-        <BoxView title="hours"/>
-        <TimerView title="timer"/>
+        <BoxView title="Timer" view={ <Timer/> } />
+        <BoxView title="Hours" view={ StatsList() }/>
+        {/* <BoxView title="Hours" view={ StatsList() } /> */}
       </div>
       {/* <Activity /> */}
     </div>
   );
 }
 
-function BoxView(props) {
+// eslint-disable-next-line
+function StatsList(props) {
   return(
-    <div className="boxview">
-      <h2>{props.title}</h2>
-      <div className="box">
-        <p>
-          this week <strong>34</strong>
-        </p>
-        <p>
-          last week <strong>23</strong>
-        </p>
-        <p>
-          alltime <strong>230</strong>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function TimerView(props) {
-  return(
-    <div className="boxview">
-      <h2>{props.title}</h2>
-      <div className="box">
-        <Timer />
-      </div>
-    </div>
-  );
-}
-
-function Activity() {
-  return(
-    <div className="activity">
-      <h1>Activity</h1>
-      <Grid />
-    </div>
-  );
-}
-
-function Grid() {
-  var y = 16
-  return(
-    <div>
-      <svg width="828" height="128">
-        <GridCell y={y} />
-      </svg>
-    </div>
-  );
-}
-
-function GridCell(props) {
-  return(
-      <rect x="0" y={props.y} width="12" height="12" className="grid-day"></rect>
+    <>
+      <p>
+        NVM
+      </p>
+    </>
   );
 }
 
