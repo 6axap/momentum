@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 
-class Timer extends React.Component {
+class Pomodoro extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +26,7 @@ class Timer extends React.Component {
     this.setRoundOrPause = this.setRoundOrPause.bind(this);
     this.tick = this.tick.bind(this);
   }
+  
   
   componentDidMount() {
     const roundLength = this.state.preferences.roundLength;
@@ -160,4 +162,4 @@ class Timer extends React.Component {
   }
 }
 
-export default Timer
+export default Pomodoro
