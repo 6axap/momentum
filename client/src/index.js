@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/index.css';
 
-import StatsGrid from './components/statsgrid'
+import ActivityMain from './components/activity'
 
 ReactDOM.render(
   <React.StrictMode>
-    <StatsGrid />
+    <ActivityMain />
   </React.StrictMode>,
   document.getElementById('root')
 );

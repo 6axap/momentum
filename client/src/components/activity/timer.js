@@ -31,6 +31,12 @@ class Timer extends React.Component {
     this.setState({ minutes: roundLength })
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.round !== prevState.round) {
+      this.fetchData(this.state.round)
+    }
+  }
+
   toggleIsActive() {
     this.setState((state, props) => ({
       isActive: !state.isActive
@@ -153,7 +159,5 @@ class Timer extends React.Component {
     );
   }
 }
-
-
 
 export default Timer

@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-function Activity() {
+function Graph() {
   return(
     <div className="activity">
       <h1>Activity</h1>
@@ -25,4 +25,4 @@ function GridCell(props) {
   );
 }
 
-export default Activity;
+export default Graph;

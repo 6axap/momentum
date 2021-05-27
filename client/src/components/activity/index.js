@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import BoxView from './box'
 import Timer from './timer'
 // eslint-disable-next-line
-import Activity from './activity'
+import Graph from './graph'
 import '../style/App.css';
 
-function StatsGrid() {
+function ActivityMain() {
   // eslint-disable-next-line
   const [data, setData] = useState(0);
 
@@ -42,4 +42,4 @@ function StatsList(props) {
   );
 }
 
-export default StatsGrid
+export default ActivityMain
