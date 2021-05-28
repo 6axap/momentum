@@ -6,11 +6,11 @@ class Pomodoro extends React.Component {
     super(props);
     this.state = {
       isActive: false,
-      isEditing: false,
-      isOnPause: false,
+      isBreakTime: false,
       minutes: 0,
-      seconds: 0,
-      round: 0,
+      seconds: 2,
+      workTime: 0,
+      rounds: [],
       preferences: {
         rounds: 2,
         roundLength: 10,
@@ -20,10 +20,10 @@ class Pomodoro extends React.Component {
       }
     }
     this.timer = null;
-    this.startTimer = this.startTimer.bind(this);
+    this.toggleTimer = this.toggleTimer.bind(this);
     this.toggleIsActive = this.toggleIsActive.bind(this);
-    this.toggleIsOnPause = this.toggleIsOnPause.bind(this);
-    this.setRoundOrPause = this.setRoundOrPause.bind(this);
+    this.toggleBreakTime = this.toggleBreakTime.bind(this);
+    this.setNewTimer = this.setNewTimer.bind(this);
     this.tick = this.tick.bind(this);
   }
   
@@ -33,11 +33,11 @@ class Pomodoro extends React.Component {
     this.setState({ minutes: roundLength })
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+/*   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.round !== prevState.round) {
       this.fetchData(this.state.round)
     }
-  }
+  } */
 
   toggleIsActive() {
     this.setState((state, props) => ({
@@ -45,50 +45,76 @@ class Pomodoro extends React.Component {
     }));
   }
 
-  toggleIsOnPause() {
+  toggleBreakTime() {
     this.setState((state, props) => ({
-      isOnPause: !state.isOnPause
+      isBreakTime: !state.isBreakTime
     }));
   }
 
-  setRoundOrPause() {
-    const round = this.state.round;
-    const rounds = this.state.preferences.rounds;
+  setNewTimer() {
     const pauseLength = this.state.preferences.pauseLength;
     const roundLength = this.state.preferences.roundLength;
-    if (round >= rounds) {
-      return
-    }
-    this.setState((state, props) => ({
-      round: state.round + 1
-    }));
-    this.toggleIsOnPause();
-    if (this.state.isOnPause) {
+    const isBreakTime = this.state.isBreakTime
+    if (isBreakTime) {
+      this.timeStampEnd();
       this.setState({ minutes: pauseLength })
     } else {
       this.setState({ minutes: roundLength })
     }
   }
 
-  startTimer() {
+  timeStampStart() {
+    const isBreakTime = this.state.isBreakTime;
+    if (isBreakTime) {
+      return
+    }
+    const rounds = this.state.rounds.slice();
+    const lastRound = rounds[rounds.length - 1];
+
+    if (rounds.length === 0 || lastRound.end != null) {
+      rounds.push({ start: new Date(), end: null })
+      this.setState({
+        rounds: rounds
+    })
+
+    }
+  }
+
+  timeStampEnd() {
+    const rounds = this.state.rounds.slice();
+    let lastRound = rounds[rounds.length - 1];
+    lastRound.end = new Date();
+    this.setState({ rounds: rounds });
+  }
+
+  toggleTimer() {
     const seconds = this.state.seconds;
     const minutes = this.state.minutes;
     const isActive = this.state.isActive;
+    // timer is inactive AND time remaining
     if (!isActive && (minutes !== 0 || seconds !== 0)) {
       this.timer = setInterval(this.tick, 1);
-      this.toggleIsActive();
+      // this.timeStampStart();
     } else {
-        clearInterval(this.timer);
-        this.toggleIsActive();
+      clearInterval(this.timer);
     }
+    this.timeStampStart();
+    this.toggleIsActive();
   }
   
   tick() {
-    const seconds = this.state.seconds - 1;
-    const minutes = this.state.minutes;
     this.setState((state, props) => ({
-      seconds: state.seconds - 1
+      seconds: state.seconds - 1,
     }));
+
+    const seconds = this.state.seconds;
+    const minutes = this.state.minutes;
+
+    if (!this.state.isBreakTime) {
+      this.setState((state, props) => ({
+        workTime: state.workTime + 1
+      }));
+    }
     if (seconds < 0 && minutes !== 0) {
       this.setState((state, props) => ({
         minutes: state.minutes - 1
@@ -97,10 +123,10 @@ class Pomodoro extends React.Component {
     } else if (seconds === 0 && minutes === 0) {
         clearInterval(this.timer);
         this.toggleIsActive();
-        this.setRoundOrPause();
+        this.toggleBreakTime();
+        this.setNewTimer();
     }
   }
-
 
 /*   editTimer() {
     const seconds = this.state.seconds;
@@ -130,17 +156,16 @@ class Pomodoro extends React.Component {
   }
 
   displayRound() {
-    const round = this.state.round;
+    const round = this.state.rounds.length;
     const rounds = this.state.preferences.rounds;
     return(
-      <p>{round}/{rounds}</p>
+      <p>- {round ? round : 1} -</p>
     );
   }
-
   
   render() {
     const isActive = this.state.isActive;
-    const isOnPause = this.state.isOnPause;
+    const isBreakTime = this.state.isBreakTime;
     let minutes = this.state.minutes.toString();
     let seconds = this.state.seconds.toString();
     minutes = (minutes < 10) ? '0' + minutes : minutes;
@@ -153,8 +178,8 @@ class Pomodoro extends React.Component {
         <p onClick={this.editTimer} className="timerdisplay">{display}</p>
         {/* this.editTimerDisplay() */}
 
-        <button onClick={this.startTimer} 
-          className={ isOnPause ? 'timerbtn paused' : 'timerbtn' }>
+        <button onClick={this.toggleTimer} 
+          className={ isBreakTime ? 'timerbtn paused' : 'timerbtn' }>
           { isActive ? 'Pause' : 'Start' }
         </button>
       </div>

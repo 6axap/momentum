@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './style/index.css';
+import './components/style/index.css';
 
 import ActivityMain from './components/activity'
 
