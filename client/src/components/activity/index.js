@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useState, useEffect } from 'react';
 import BoxView from './box'
 import Pomodoro from './pomodoro'
@@ -25,7 +26,7 @@ function ActivityMain() {
     }
   });
 
-  useEffect(() => {
+/*   useEffect(() => {
     fetchAPI('/api')
   });
 
@@ -33,7 +34,7 @@ function ActivityMain() {
     fetch(path)
     .then(res => res.json())
     .then(data => setData( data ))
-  }
+  } */
 
   return(
     <div className="main">

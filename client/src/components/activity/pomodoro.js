@@ -9,8 +9,9 @@ class Pomodoro extends React.Component {
       isBreakTime: false,
       minutes: 0,
       seconds: 2,
-      workTime: 0,
+      totalTime: 0,
       rounds: [],
+      tickFrequency: 1,
       preferences: {
         rounds: 2,
         roundLength: 10,
@@ -27,17 +28,26 @@ class Pomodoro extends React.Component {
     this.tick = this.tick.bind(this);
   }
   
-  
   componentDidMount() {
     const roundLength = this.state.preferences.roundLength;
     this.setState({ minutes: roundLength })
   }
 
-/*   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.round !== prevState.round) {
-      this.fetchData(this.state.round)
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const rounds = this.state.rounds;
+    const totalTime = this.state.totalTime;
+    const data = { rounds, totalTime };
+    if (this.state.rounds !== prevState.rounds) {
+      axios({
+        method: 'post',
+        url: '/api/add',
+        data: data
+      });
     }
-  } */
+  }
+
+  fetchData() {
+  }
 
   toggleIsActive() {
     this.setState((state, props) => ({
@@ -54,7 +64,7 @@ class Pomodoro extends React.Component {
   setNewTimer() {
     const pauseLength = this.state.preferences.pauseLength;
     const roundLength = this.state.preferences.roundLength;
-    const isBreakTime = this.state.isBreakTime
+    const isBreakTime = this.state.isBreakTime;
     if (isBreakTime) {
       this.timeStampEnd();
       this.setState({ minutes: pauseLength })
@@ -70,13 +80,11 @@ class Pomodoro extends React.Component {
     }
     const rounds = this.state.rounds.slice();
     const lastRound = rounds[rounds.length - 1];
-
     if (rounds.length === 0 || lastRound.end != null) {
       rounds.push({ start: new Date(), end: null })
       this.setState({
         rounds: rounds
     })
-
     }
   }
 
@@ -91,14 +99,17 @@ class Pomodoro extends React.Component {
     const seconds = this.state.seconds;
     const minutes = this.state.minutes;
     const isActive = this.state.isActive;
+    const tickFrequency = this.state.tickFrequency;
+    // StartTimer
     // timer is inactive AND time remaining
     if (!isActive && (minutes !== 0 || seconds !== 0)) {
-      this.timer = setInterval(this.tick, 1);
-      // this.timeStampStart();
-    } else {
+      this.timer = setInterval(this.tick, tickFrequency);
+      this.timeStampStart();
+    } 
+    // StopTimer
+    else {
       clearInterval(this.timer);
     }
-    this.timeStampStart();
     this.toggleIsActive();
   }
   
@@ -112,7 +123,7 @@ class Pomodoro extends React.Component {
 
     if (!this.state.isBreakTime) {
       this.setState((state, props) => ({
-        workTime: state.workTime + 1
+        totalTime: state.totalTime + 1
       }));
     }
     if (seconds < 0 && minutes !== 0) {
@@ -157,7 +168,7 @@ class Pomodoro extends React.Component {
 
   displayRound() {
     const round = this.state.rounds.length;
-    const rounds = this.state.preferences.rounds;
+    // const rounds = this.state.preferences.rounds;
     return(
       <p>- {round ? round : 1} -</p>
     );

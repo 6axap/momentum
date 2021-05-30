@@ -27,6 +27,16 @@ class DAO {
       console.error(err)
     }
   }
+
+  static async postData(body) {
+    let insertResult
+    try {
+      insertResult = await activities.insertOne(body)
+      return insertResult
+    } catch (err) {
+      console.error(err)
+    }
+  }
 }
 
 module.exports = DAO
