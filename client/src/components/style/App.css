@@ -61,13 +61,20 @@ div {
   margin: auto;
 }
 
-.stats {
+/* .stats {
   display: flex;
-}
+} */
 
 .boxview {
-  flex-basis: 50%;
   margin: 16px;
+}
+
+.boxview.half {
+  flex-basis: 50%;
+}
+
+.boxview.full {
+  flex-basis: 100%;
 }
 
 .boxview .title {
@@ -154,4 +161,43 @@ div {
 
 .min {
   margin-right: 8px;
+}
+
+.table {
+  display: grid;
+  margin: auto;
+}
+
+.itemrow {
+  display: grid;
+  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-collapse: collapse;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 2fr repeat(7, 1fr);
+}
+
+.itemrow > div {
+  /* background-color: #f1f1f1; */
+  padding: 10px;
+  font-size: 20px;
+}
+
+.itemrow > .row-title {
+  border-right: 1px solid #dddddd;
+}
+
+.daterow {
+  border: none;
+  text-align: center;
+  font-size: 2em;
+  font-weight: 300;
+}
+
+.check {
+  text-align: center;
+  border-right: 1px solid #dddddd;
+  color: #46b742;
 }

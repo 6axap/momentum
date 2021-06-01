@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './components/style/index.css';
-
-import ActivityMain from './components/activity'
+import App from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ActivityMain />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

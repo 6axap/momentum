@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import BoxView from './box'
 import Pomodoro from './pomodoro'
+import HabitsList from './main'
 // eslint-disable-next-line
 import Graph from './graph'
 import '../style/App.css';
@@ -26,25 +27,15 @@ function ActivityMain() {
     }
   });
 
-/*   useEffect(() => {
-    fetchAPI('/api')
-  });
-
-  const fetchAPI = (path) => {
-    fetch(path)
-    .then(res => res.json())
-    .then(data => setData( data ))
-  } */
-
   return(
-    <div className="main">
-      <div className="stats">
-        <BoxView title="Timer" view={ <Pomodoro/> } />
-        <BoxView title="Hours" view={ StatsList() }/>
-        {/* <BoxView title="Hours" view={ StatsList() } /> */}
+    <>
+      <div className="main-wrapper">
+        <BoxView title="Habits" view={ <HabitsList /> } width="full" />
+        <BoxView title="Timer" view={ <Pomodoro/> } width="half" />
+        <BoxView title="Hours" view={ StatsList() } width="half" />
       </div>
-      {/* <Activity /> */}
-    </div>
+      {/* <Graph /> */}
+    </>
   );
 }
 
@@ -53,10 +44,10 @@ function StatsList(props) {
   return(
     <>
       <p>
-        NVM
+        N/A
       </p>
     </>
   );
 }
 
-export default ActivityMain
+export default ActivityMain;

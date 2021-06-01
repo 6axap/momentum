@@ -29,9 +29,22 @@ class DAO {
   }
 
   static async postData(body) {
-    let insertResult
+    let dateString = body.rounds[0].start;
+    let date = new Date(dateString);
+    let rounds = body.rounds;
     try {
-      insertResult = await activities.insertOne(body)
+      let insertResult = await activities.updateOne(
+        { 
+          rounds: { $all: [ rounds[0] ] },
+        },
+        {
+          $set: {
+            date: date.toLocaleDateString(),
+            rounds: rounds,
+          },
+        },
+        { upsert: true },
+      )
       return insertResult
     } catch (err) {
       console.error(err)

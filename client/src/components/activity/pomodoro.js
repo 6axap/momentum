@@ -11,7 +11,7 @@ class Pomodoro extends React.Component {
       seconds: 2,
       totalTime: 0,
       rounds: [],
-      tickFrequency: 1,
+      tickFrequency: 1000,
       preferences: {
         rounds: 2,
         roundLength: 10,
@@ -33,11 +33,12 @@ class Pomodoro extends React.Component {
     this.setState({ minutes: roundLength })
   }
 
+  // add async?
   componentDidUpdate(prevProps, prevState, snapshot) {
     const rounds = this.state.rounds;
-    const totalTime = this.state.totalTime;
-    const data = { rounds, totalTime };
-    if (this.state.rounds !== prevState.rounds) {
+    const lastRound = rounds[rounds.length - 1];
+    const data = { rounds };
+    if (this.state.rounds !== prevState.rounds && lastRound.end !== null) {
       axios({
         method: 'post',
         url: '/api/add',
@@ -92,7 +93,9 @@ class Pomodoro extends React.Component {
     const rounds = this.state.rounds.slice();
     let lastRound = rounds[rounds.length - 1];
     lastRound.end = new Date();
+    lastRound.workTime = this.state.totalTime;
     this.setState({ rounds: rounds });
+    this.setState({ totalTime: 0 })
   }
 
   toggleTimer() {
@@ -117,10 +120,8 @@ class Pomodoro extends React.Component {
     this.setState((state, props) => ({
       seconds: state.seconds - 1,
     }));
-
     const seconds = this.state.seconds;
     const minutes = this.state.minutes;
-
     if (!this.state.isBreakTime) {
       this.setState((state, props) => ({
         totalTime: state.totalTime + 1
