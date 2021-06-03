@@ -201,3 +201,8 @@ div {
   border-right: 1px solid #dddddd;
   color: #46b742;
 }
+
+form#loginform > input {
+  padding: .25rem 1rem;
+  min-height: 2.75rem;
+}
